@@ -38,7 +38,7 @@ int main(int argc, char ** argv) {
 
 	if (input == 1){
 
-		int sk = socket(PF_INET, SOCK_DGRAM, 0);
+		int sk = socket(AF_INET, SOCK_DGRAM, 0);
 
 		struct sockaddr_in addr = {
 			.sin_family = AF_INET,
@@ -66,7 +66,7 @@ int main(int argc, char ** argv) {
 		printf("connect return %d", ret);*/
 	}
 	else{
-		int sk = socket(PF_INET, SOCK_DGRAM, 0);
+		int sk = socket(AF_INET, SOCK_DGRAM, 0);
 		if (sk < 0)
 			perror("connect fail");
 
