@@ -35,8 +35,26 @@ int main(int argc, char ** argv) {
 	}
 
 	int input = takenumber (argv[1]);
+
 	if (input == 1){
-		int sk = socket (PF_INET, SOCK_STREAM, 0);
+
+		int sk = socket(PF_INET, SOCK_DGRAM, 0);
+
+		struct sockaddr_in addr = {
+			.sin_family = AF_INET,
+			.sin_port	= htons(8000),
+			.sin_addr	= htonl(INADDR_ANY)
+		};
+
+		char buf[16];
+
+		bind(sk, (struct sockaddr*) &addr, sizeof(addr));
+		unsigned int size = sizeof(addr);
+		recvfrom(sk, buf, sizeof(buf), 0, (struct sockaddr*) &addr, &size);
+
+		printf ("%s", buf);
+
+	/*	int sk = socket (PF_INET, SOCK_STREAM, 0);
 		struct sockaddr_in addr = {
 			.sin_family = AF_INET,
 			.sin_port	= htons(8000),
@@ -45,10 +63,34 @@ int main(int argc, char ** argv) {
 
 		int ret = connect (sk, (struct sockaddr*) &addr, sizeof(addr));
 
-		printf("connect return %d", ret);
+		printf("connect return %d", ret);*/
 	}
 	else{
-		int sk = socket(PF_INET, SOCK_STREAM, 0);
+		int sk = socket(PF_INET, SOCK_DGRAM, 0);
+		if (sk < 0)
+			perror("connect fail");
+
+		struct sockaddr_in addr = {
+			.sin_family = AF_INET,
+			.sin_port	= htons(8000),
+			.sin_addr	= htonl(0xffffffff)
+		};
+
+		int ret = connect(sk, (struct sockaddr*) &addr, sizeof(addr));
+		if (ret == -1)
+			perror("connect fail");
+
+		int a = 1;
+		ret = setsockopt(sk, SOL_SOCKET, SO_BROADCAST, &a, sizeof(a));
+		if (ret == -1)
+			perror("setsockopt fail");
+
+			char buf[16] = "Hello world!...";
+
+		sendto(sk, buf, sizeof(buf), 0,(struct sockaddr*) &addr, sizeof(addr));
+		if (ret == -1)
+			perror("sendto error");
+	/*	int sk = socket(PF_INET, SOCK_STREAM, 0);
 
 		listen(sk, 256);
 		struct sockaddr_in addr = {
@@ -60,7 +102,7 @@ int main(int argc, char ** argv) {
 		bind(sk, (struct sockaddr*) &addr, sizeof(addr));
 		int sk2 = accept(sk, (struct sockaddr*) &addr, sizeof(addr));
 
-		printf("accept returned %d", sk2);
+		printf("accept returned %d", sk2);*/
 	}
 
 	return 0;
