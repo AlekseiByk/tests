@@ -58,6 +58,8 @@ int main(int argc, char ** argv) {
 		if (ret == -1)
 			perror("recv fail");
 
+
+
 		printf ("%s", buf);
 
 	/*	int sk = socket (PF_INET, SOCK_STREAM, 0);
@@ -82,8 +84,8 @@ int main(int argc, char ** argv) {
 			.sin_addr	= htonl(0xffffffff)
 		};
 
-		int ret = connect(sk, (struct sockaddr*) &addr, sizeof(addr));
-		if (ret == -1)
+		//int ret = connect(sk, (struct sockaddr*) &addr, sizeof(addr));
+		//if (ret == -1)\
 			perror("connect fail");
 
 		int a = 1;
