@@ -39,6 +39,8 @@ int main(int argc, char ** argv) {
 	if (input == 1){
 
 		int sk = socket(AF_INET, SOCK_DGRAM, 0);
+		if (sk == -1)
+			perror("socket fail");
 
 		struct sockaddr_in addr = {
 			.sin_family = AF_INET,
@@ -48,9 +50,13 @@ int main(int argc, char ** argv) {
 
 		char buf[16];
 
-		bind(sk, (struct sockaddr*) &addr, sizeof(addr));
+		int ret = bind(sk, (struct sockaddr*) &addr, sizeof(addr));
+		if (ret == -1)
+			perror("bind fail");
 		unsigned int size = sizeof(addr);
 		recvfrom(sk, buf, sizeof(buf), 0, (struct sockaddr*) &addr, &size);
+		if (ret == -1)
+			perror("recv fail");
 
 		printf ("%s", buf);
 
@@ -68,7 +74,7 @@ int main(int argc, char ** argv) {
 	else{
 		int sk = socket(AF_INET, SOCK_DGRAM, 0);
 		if (sk < 0)
-			perror("connect fail");
+			perror("socket fail");
 
 		struct sockaddr_in addr = {
 			.sin_family = AF_INET,
@@ -85,7 +91,7 @@ int main(int argc, char ** argv) {
 		if (ret == -1)
 			perror("setsockopt fail");
 
-			char buf[16] = "Hello world!...";
+		char buf[16] = "Hello world!...";
 
 		sendto(sk, buf, sizeof(buf), 0,(struct sockaddr*) &addr, sizeof(addr));
 		if (ret == -1)
