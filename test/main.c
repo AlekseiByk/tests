@@ -58,8 +58,6 @@ int main(int argc, char ** argv) {
 		if (ret == -1)
 			perror("recv fail");
 
-
-
 		printf ("%s", buf);
 */
 
@@ -106,12 +104,27 @@ int main(int argc, char ** argv) {
 			.sin_addr	= htonl(INADDR_ANY)
 		};
 
-		bind(sk, (struct sockaddr*) &addr, sizeof(addr));
+		printf("binding\n");
+		fflush(0);
+
+		int ret = bind(sk, (struct sockaddr*) &addr, sizeof(addr));
+		if (ret = -1)
+			perror("bind error");
+
+		printf("listening\n");
+		fflush(0);
 
 		listen(sk, 256);
+		if (ret = -1)
+			perror("listen error");
+
+		printf("accepting\n");
+		fflush(0);			
 
 		unsigned int size = sizeof(addr);
 		int sk2 = accept(sk, (struct sockaddr*) &addr, &size);
+		if (ret = -1)
+			perror("accept error");
 
 		printf("accept returned %d", sk2);
 	}
