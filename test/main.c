@@ -37,7 +37,7 @@ int main(int argc, char ** argv) {
 	int input = takenumber (argv[1]);
 
 	if (input == 1){
-
+/*
 		int sk = socket(AF_INET, SOCK_DGRAM, 0);
 		if (sk == -1)
 			perror("socket fail");
@@ -61,8 +61,8 @@ int main(int argc, char ** argv) {
 
 
 		printf ("%s", buf);
+*/
 
-/*
 		int sk = socket (PF_INET, SOCK_STREAM, 0);
 		struct sockaddr_in addr = {
 			.sin_family = AF_INET,
@@ -73,7 +73,7 @@ int main(int argc, char ** argv) {
 		int ret = connect (sk, (struct sockaddr*) &addr, sizeof(addr));
 
 		printf("connect return %d", ret);
-*/
+
 	}
 	else{
 /*		
@@ -90,14 +90,14 @@ int main(int argc, char ** argv) {
 		int a = 1;
 		int ret = setsockopt(sk, SOL_SOCKET, SO_BROADCAST, &a, sizeof(a));
 		if (ret == -1)
-			perror("setsockopt fail");																																																																							while (1) {};
+			perror("setsockopt fail");
 
 		char buf[16] = "Hello world!...";
 
 		sendto(sk, buf, sizeof(buf), 0,(struct sockaddr*) &addr, sizeof(addr));
 		if (ret == -1)
 			perror("sendto error");
-*/
+			*/
 		int sk = socket(PF_INET, SOCK_STREAM, 0);
 
 		struct sockaddr_in addr = {
@@ -125,7 +125,7 @@ int takenumber (char * str)
 	long input = 0;
 	input = strtol(str, &endptr, 10);
  
- --------------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------
 	if (endptr == strptr || *endptr != '\0') {
 		printf("Wront input string\n");
 		exit (-3);
