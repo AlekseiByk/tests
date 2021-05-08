@@ -4,8 +4,6 @@ all:
 push:
 	cd ..
 	git push
-	cd ..
 pull:
 	cd ..
 	git pull
-	cd ..
