@@ -110,7 +110,8 @@ int main(int argc, char ** argv) {
 
 		listen(sk, 256);
 
-		int sk2 = accept(sk, (struct sockaddr*) &addr, sizeof(addr));
+		unsigned int size = sizeof(addr);
+		int sk2 = accept(sk, (struct sockaddr*) &addr, &size);
 
 		printf("accept returned %d", sk2);
 	}
