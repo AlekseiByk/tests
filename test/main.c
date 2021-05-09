@@ -66,8 +66,10 @@ int main(int argc, char ** argv) {
 		struct sockaddr_in addr = {
 			.sin_family = AF_INET,
 			.sin_port	= htons(8000),
-			.sin_addr	= htonl(inet_addr("192.168.0.108"))
+			.sin_addr	= htonl(0xC0A8006C)
 		};
+
+		printf("%x\n", inet_addr("192.168.0.108"));
 		
 		
 		int ret = connect (sk, (struct sockaddr*) &addr, sizeof(addr));
