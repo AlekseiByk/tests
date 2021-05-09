@@ -15,6 +15,7 @@
 #include <netinet/in.h>
 #include <netinet/udp.h>
 #include <netinet/tcp.h>
+#include <arpa/inet.h>
 
 /*
 int main() {
@@ -35,6 +36,8 @@ int main(int argc, char ** argv) {
 	}
 
 	int input = takenumber (argv[1]);
+
+	printf("%x", 16);
 
 	if (input == 1){
 /*
@@ -69,6 +72,8 @@ int main(int argc, char ** argv) {
 		};
 
 		int ret = connect (sk, (struct sockaddr*) &addr, sizeof(addr));
+		if (ret == -1)
+			perror("connect fail");
 
 		printf("connect return %d", ret);
 
