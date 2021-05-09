@@ -37,8 +37,6 @@ int main(int argc, char ** argv) {
 
 	int input = takenumber (argv[1]);
 
-	printf("%x", 16);
-
 	if (input == 1){
 /*
 		int sk = socket(AF_INET, SOCK_DGRAM, 0);
@@ -68,9 +66,10 @@ int main(int argc, char ** argv) {
 		struct sockaddr_in addr = {
 			.sin_family = AF_INET,
 			.sin_port	= htons(8000),
-			.sin_addr	= htonl(0x7F000001)
+			.sin_addr	= htonl(inet_addr("192.168.0.108"))
 		};
-
+		
+		
 		int ret = connect (sk, (struct sockaddr*) &addr, sizeof(addr));
 		if (ret == -1)
 			perror("connect fail");
@@ -102,6 +101,11 @@ int main(int argc, char ** argv) {
 			perror("sendto error");
 			*/
 		int sk = socket(PF_INET, SOCK_STREAM, 0);
+		if (sk == -1)
+			perror ("socket");
+
+		printf ("socket");
+		fflush(0);
 
 		struct sockaddr_in addr = {
 			.sin_family = AF_INET,
