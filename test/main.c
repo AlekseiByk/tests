@@ -61,6 +61,9 @@ int main(int argc, char ** argv) {
 		if (ret == -1)
 			perror("recv fail");
 
+			printf("a\n");
+			fflush(0);
+
 ///////////////////////////////////////////
 
 		int sk = socket (PF_INET, SOCK_STREAM, 0);
