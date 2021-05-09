@@ -16,6 +16,8 @@
 #include <netinet/udp.h>
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
+#include <ifaddrs.h>
+
 
 /*
 int main() {
@@ -38,29 +40,28 @@ int main(int argc, char ** argv) {
 	int input = takenumber (argv[1]);
 
 	if (input == 1){
-/*
-		int sk = socket(AF_INET, SOCK_DGRAM, 0);
-		if (sk == -1)
+
+		int sk_udp = socket(AF_INET, SOCK_DGRAM, 0);
+		if (sk_udp == -1)
 			perror("socket fail");
 
-		struct sockaddr_in addr = {
+		struct sockaddr_in addr1 = {
 			.sin_family = AF_INET,
 			.sin_port	= htons(8000),
 			.sin_addr	= htonl(INADDR_ANY)
 		};
 
-		char buf[16];
+		char buf[sizeof(struct sockaddr)];
 
-		int ret = bind(sk, (struct sockaddr*) &addr, sizeof(addr));
+		int ret = bind(sk_udp, (struct sockaddr*) &addr1, sizeof(addr1));
 		if (ret == -1)
 			perror("bind fail");
-		unsigned int size = sizeof(addr);
-		recvfrom(sk, buf, sizeof(buf), 0, (struct sockaddr*) &addr, &size);
+		unsigned int size = sizeof(addr1);
+		recvfrom(sk_udp, buf, sizeof(struct sockaddr), 0, (struct sockaddr*) &addr1, &size);
 		if (ret == -1)
 			perror("recv fail");
 
-		printf ("%s", buf);
-*/
+///////////////////////////////////////////
 
 		int sk = socket (PF_INET, SOCK_STREAM, 0);
 		struct sockaddr_in addr = {
@@ -69,10 +70,16 @@ int main(int argc, char ** argv) {
 			.sin_addr	= htonl(0xC0A8006C)
 		};
 
-		printf("%x\n", inet_addr("192.168.0.108"));
+		struct ifaddrs *ifap;
+
+		ret = getifaddrs (&ifap);
+		if (ret == -1)
+			perror("getifaddr error");
+
+		printf("%d\n", sizeof (struct sockaddr)); //htonl(inet_addr("192.168.0.108"))
 		
 		
-		int ret = connect (sk, (struct sockaddr*) &addr, sizeof(addr));
+		ret = connect (sk, (struct sockaddr*) buf, sizeof(struct sockaddr));
 		if (ret == -1)
 			perror("connect fail");
 
@@ -80,28 +87,34 @@ int main(int argc, char ** argv) {
 
 	}
 	else{
-/*		
-		int sk = socket(AF_INET, SOCK_DGRAM, 0);
-		if (sk < 0)
+		
+		int sk_udp = socket(AF_INET, SOCK_DGRAM, 0);
+		if (sk_udp < 0)
 			perror("socket fail");
 
-		struct sockaddr_in addr = {
+		struct sockaddr_in addr1 = {
 			.sin_family = AF_INET,
 			.sin_port	= htons(8000),
 			.sin_addr	= htonl(0xffffffff)
 		};
 
 		int a = 1;
-		int ret = setsockopt(sk, SOL_SOCKET, SO_BROADCAST, &a, sizeof(a));
+		int ret = setsockopt(sk_udp, SOL_SOCKET, SO_BROADCAST, &a, sizeof(a));
 		if (ret == -1)
 			perror("setsockopt fail");
 
-		char buf[16] = "Hello world!...";
+		struct ifaddrs *ifap;
 
-		sendto(sk, buf, sizeof(buf), 0,(struct sockaddr*) &addr, sizeof(addr));
+		ret = getifaddrs (&ifap);
+		if (ret == -1)
+			perror("getifaddr error");
+
+		printf("%d\n", sizeof (struct sockaddr)); //htonl(inet_addr("192.168.0.108"))
+
+		sendto(sk_udp, ifap -> ifa_addr, sizeof(struct sockaddr), 0,(struct sockaddr*) &addr1, sizeof(addr1));
 		if (ret == -1)
 			perror("sendto error");
-			*/
+//////////////////////////////////////////////////////////////
 		int sk = socket(PF_INET, SOCK_STREAM, 0);
 		if (sk == -1)
 			perror ("socket");
@@ -118,7 +131,7 @@ int main(int argc, char ** argv) {
 		printf("binding\n");
 		fflush(0);
 
-		int ret = bind(sk, (struct sockaddr*) &addr, sizeof(addr));
+		ret = bind(sk, (struct sockaddr*) &addr, sizeof(addr));
 		if (ret = -1)
 			perror("bind error");
 
