@@ -28,7 +28,7 @@ int main (int argc, char *argv[], char *envp[])
     for (int i = 0; i < n; i++)
         fin >> B[i][0];             //std::cin>> B[i][0];
 
-    fin >> pthread_number;          //std::cin >> pthread_number;
+    pthread_number = std::atoi(argv[1]);//fin >> pthread_number;          //std::cin >> pthread_number;
     std::cout<< "*********A\n";
     A.print();
     std::cout<< "*********B\n";
@@ -36,7 +36,7 @@ int main (int argc, char *argv[], char *envp[])
     std::cout<< "**********\n";
     std::cout<< "number of threads = " << pthread_number<< std::endl;
     std::thread * pthread = new std::thread[MIN(m, n) + 1];
-    Matrix<double> X {n, 1, 0};
+    Matrix<double> X {m, 1, 0};
 
     int j = -1;
     int temp1 = 0;
