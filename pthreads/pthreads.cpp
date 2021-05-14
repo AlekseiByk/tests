@@ -1,6 +1,9 @@
 #include "matrix.hpp"
 #include <iostream>
 #include <thread>
+#include <unistd.h>
+#include <stdio.h>
+#include <fstream>
 
 #define MAX( a, b) ((a > b)? a : b)
 #define MIN( a, b) ((a < b)? a : b)
@@ -9,20 +12,23 @@ void calc_func (const Matrix<double> &A,const Matrix<double> &B, Matrix<double> 
 
 int main (int argc, char *argv[], char *envp[]) 
 {
+    std::ifstream fin;          //--------file open
+    fin.open("test.txt");
+
     int m, n, pthread_number;
-    std::cin >> m >> n;
+    fin >> m >> n;                  //std::cin >> m >> n;
 
     Matrix<double> A {n, m, 0};
     Matrix<double> B {n, 1, 0};
 
     for (int i = 0; i < n; i++)
         for (int j = 0; j < m; j++)
-            std::cin>> A[i][j];
+            fin >> A[i][j];         //std::cin>> A[i][j];
 
     for (int i = 0; i < n; i++)
-        std::cin>> B[i][0];
+        fin >> B[i][0];             //std::cin>> B[i][0];
 
-    std::cin >> pthread_number;
+    fin >> pthread_number;          //std::cin >> pthread_number;
     std::cout<< "*********A\n";
     A.print();
     std::cout<< "*********B\n";
@@ -64,13 +70,16 @@ int main (int argc, char *argv[], char *envp[])
     else
         std::cout << "Det[A] = " << Det << std::endl; 
 
+    fin.close();
+    delete[] pthread;
     return 0;
 }
 
 void calc_func (const Matrix<double> &A,const Matrix<double> &B, Matrix<double> &X, int n, double &Det){
 
     Matrix<double> A1 {A};
-    A1.doSquare_min();    
+    A1.doSquare_min();   
+    usleep(1000000); 
 
     if (n == -1){
         Det = A1.determinant();
@@ -81,6 +90,8 @@ void calc_func (const Matrix<double> &A,const Matrix<double> &B, Matrix<double> 
     A1.changeColumn(n, B);
 
     X[n][0] = A1.determinant();
+
+    
     
     return;
 }
